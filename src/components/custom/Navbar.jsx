@@ -10,7 +10,7 @@ export default function Navbar() {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
   
   return (
-    <nav className="flex justify-between items-center px-4 sm:m-0 lg:px-8 py-3 sm:py-4 bg-white dark:bg-black border-b border-gray-200 dark:border-gray-800 shadow-md dark:shadow-slate-800">
+    <nav className="flex justify-between items-center px-4 sm:m-0 lg:px-8 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-800 shadow-md dark:shadow-slate-800">
       {/* Left Section: Toggle & Cart */}
       <div className="flex items-center gap-4 px-3">
         <ModeToggle />

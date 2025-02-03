@@ -1,10 +1,12 @@
 import React from 'react'
-import HeroSection from '../components/custom/HeroSection';
+import HeroBanner from '../components/custom/HeroBanner';
+import FilterMenu from '@/components/custom/FilterMenu';
 
 export default function home() {
   return (
     <>
-      <HeroSection />
+      <HeroBanner />
+      <FilterMenu/>
     </>
   )
 }

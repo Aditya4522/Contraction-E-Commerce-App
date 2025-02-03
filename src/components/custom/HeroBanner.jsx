@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-export default  ImageCarousel = () => {
+export default function  ImageCarousel () {
   const images = [
     { url: "https://images.pexels.com/photos/237950/pexels-photo-237950.jpeg?auto=compress&cs=tinysrgb&w=600", alt: "Slide 1" },
     { url: "https://images.pexels.com/photos/46167/iron-rods-reinforcing-bars-rods-steel-bars-46167.jpeg?auto=compress&cs=tinysrgb&w=600", alt: "Slide 2" },
@@ -39,9 +39,9 @@ export default  ImageCarousel = () => {
   };
 
   return (
-    <div className="relative w-full max-w-8xl mx-auto mt-5 px-4 ">
+    <div className="relative w-full max-w-8xl mx-auto mt-3 px-2 ">
       {/* Main image container */}
-      <div className="relative h-96 overflow-hidden rounded-lg">
+      <div className="relative h-80 overflow-hidden rounded-lg">
         {images.map((image, index) => (
           <div
             key={index}
