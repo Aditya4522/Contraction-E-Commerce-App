@@ -5,14 +5,14 @@ import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
 
 export default function Footer() {
   return (
-    <footer className=" bg-gray-800 dark:bg-gray-900 text-white py-12 mt-20">
+    <footer className=" bg-gray-700 dark:bg-gray-900 text-white py-12 mt-20">
       <div className="container mx-auto px-4">
         
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Column 1: About Us */}
           <div>
             <h3 className="text-lg font-semibold mb-4">About Us</h3>
-            <p className="text-gray-400">
+            <p className="text-gray-400 hover:text-white transition-all ease-in-out">
               We are a company dedicated to providing the best products and
               services to our customers. Our mission is to make your life easier
               and more enjoyable.

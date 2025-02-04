@@ -2,6 +2,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom"; // ✅ C
 import { ThemeProvider } from "@/components/Theme/theme-provider"
 import Home from "./Pages/Home";
 import Navbar from "./components/custom/Navbar";
+import Footer from "./components/custom/Footer";
+import SignUp from "./components/custom/SignUp";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -13,6 +15,18 @@ export default function App() {
         <>
         <Navbar/>
         <Home/>
+        <Footer/>
+        </>
+      )
+    },
+    {
+      path: "/signup",
+      
+      element:(
+        <>
+        <Navbar/>
+        <SignUp/>
+        <Footer/>
         </>
       )
     },
