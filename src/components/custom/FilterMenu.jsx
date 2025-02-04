@@ -23,7 +23,7 @@ import {Input} from "@/components/ui/input"
     const [category, setCategory] = useState();
     const [price, setPrice] = useState();
     const [search, setSearch] = useState();
-    console.log(search);
+    
     
   
     return (
@@ -45,9 +45,9 @@ import {Input} from "@/components/ui/input"
             <SelectTrigger className="max-w-sm  mt-3 mx-2 sm:mx-2 sm:w-1/2 border-black dark:border-white">
               <SelectValue placeholder={CategoryData.tigger} />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent >
               {CategoryData.items.map((item) => (
-                <SelectItem key={item} value={item}>
+                <SelectItem key={item} value={item} className="capitalize">
                   {item}
                 </SelectItem>
               ))}
@@ -55,14 +55,14 @@ import {Input} from "@/components/ui/input"
           </Select>
       
           {/* for price */}
-          <Select onValueChange={(value) => setPrice(value)}>
+          <Select onValueChange={(value) => setPrice(value)} > 
             <SelectTrigger className="max-w-sm mt-3 mx-2 sm:mx-2 sm:w-1/2  border-black dark:border-white    ">
               <SelectValue placeholder={priceData.tigger} />
             </SelectTrigger>
             <SelectContent>
               {priceData.items.map((item) => (
-                <SelectItem key={item} value={String(item)}>
-                  {item}
+                <SelectItem key={item} value={String(item)} >
+                   Less then {item}
                 </SelectItem>
               ))}
             </SelectContent>
