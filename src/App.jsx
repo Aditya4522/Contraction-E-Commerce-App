@@ -3,7 +3,10 @@ import { ThemeProvider } from "@/components/Theme/theme-provider"
 import Home from "./Pages/Home";
 import Navbar from "./components/custom/Navbar";
 import Footer from "./components/custom/Footer";
-import SignUp from "./components/custom/SignUp";
+import SignUp from "./Pages/SignUp";
+import Login from "./Pages/Login";
+
+
 
 export default function App() {
   const router = createBrowserRouter([
@@ -26,6 +29,17 @@ export default function App() {
         <>
         <Navbar/>
         <SignUp/>
+        <Footer/>
+        </>
+      )
+    },
+    {
+      path: "/login",
+      
+      element:(
+        <>
+        <Navbar/>
+        <Login/>
         <Footer/>
         </>
       )

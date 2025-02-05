@@ -1,4 +1,7 @@
+import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { Link } from "react-router-dom";
+
 
 export default function SignUp() {
   const [enabled, setEnabled] = useState(false);
@@ -7,8 +10,8 @@ export default function SignUp() {
   
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
-      <div className="w-full max-w-md p-8 space-y-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg">
+    <div className="min-h-fit py-12 px-5 flex items-center justify-center bg-gray-50  dark:bg-gray-900 transition-colors duration-200">
+      <div className="w-full max-w-md p-8 space-y-6 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl">
        
         <div className="space-y-2 text-center">
           <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
@@ -54,7 +57,7 @@ export default function SignUp() {
                 required
             />
 
-            <input 
+            <input
               placeholder="Password" 
               type="password" 
               name="password"
@@ -82,7 +85,7 @@ export default function SignUp() {
             </label>
           </div>
 
-          <button
+          <Button
             type="submit"
             disabled={!enabled}
             className="w-full h-11 bg-blue-600 hover:bg-blue-700 text-white font-medium 
@@ -90,19 +93,19 @@ export default function SignUp() {
               dark:bg-blue-500 dark:hover:bg-blue-600"
           >
             Create Account
-          </button>
+          </Button >
         </form>
 
         <div className="text-center">
           <p className="text-sm text-gray-600 dark:text-gray-300">
             Already have an account?{" "}
-            <a 
-              href="/login"
+            <Link
+              to={'/login'}
               className="font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 
                 dark:hover:text-blue-300 transition-colors"
             >
               Sign in
-            </a>
+            </Link>
           </p>
         </div>
       </div>
