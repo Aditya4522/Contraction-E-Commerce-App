@@ -29,7 +29,7 @@ export default function CartDrawer() {
     {
       id: 3,
       name: "apple",
-      price: 4,
+      price: 12,
       quantity: 1,
     },
   ];

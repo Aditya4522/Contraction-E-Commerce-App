@@ -5,6 +5,7 @@ import Navbar from "./components/custom/Navbar";
 import Footer from "./components/custom/Footer";
 import SignUp from "./Pages/SignUp";
 import Login from "./Pages/Login";
+import Product from "./Pages/Product";
 
 
 
@@ -40,6 +41,17 @@ export default function App() {
         <>
         <Navbar/>
         <Login/>
+        <Footer/>
+        </>
+      )
+    },
+    {
+      path: "/product",
+      
+      element:(
+        <>
+        <Navbar/>
+        <Product/>
         <Footer/>
         </>
       )
