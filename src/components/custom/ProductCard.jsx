@@ -30,7 +30,7 @@ export default function ProductCard({
             {price}
           </span>
         </div>
-        <LInkBuuton to={`/product/${image.id}`} text="View Product" />
+        <LInkBuuton to='/product' text="View Product" />
       </div>
     </div>
   );
