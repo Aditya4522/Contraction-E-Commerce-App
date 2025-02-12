@@ -26,7 +26,7 @@ export default function Navbar() {
 
       {/* Logo */}
       <Link to="/" className="text-2xl font-bold text-black dark:text-white">
-        CTRC Store
+        CTM Store
       </Link>
 
       {/* Navigation Links */}

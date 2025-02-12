@@ -7,7 +7,7 @@ import SignUp from "./Pages/SignUp";
 import Login from "./Pages/Login";
 import Product from "./Pages/Product";
 import Checkout from "./Pages/Checkout";
-
+import AdminLogin from "./Pages/AdminLogin";
 
 
 export default function App() {
@@ -65,6 +65,17 @@ export default function App() {
         <>
         <Navbar/>
         <Checkout/>
+        <Footer/>
+        </>
+      )
+    },
+    {
+      path: "/admin/login",
+      
+      element:(
+        <>
+        <Navbar/>
+        <AdminLogin/>
         <Footer/>
         </>
       )
