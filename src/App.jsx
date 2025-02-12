@@ -8,6 +8,8 @@ import Login from "./Pages/Login";
 import Product from "./Pages/Product";
 import Checkout from "./Pages/Checkout";
 import AdminLogin from "./Pages/AdminLogin";
+import Error from "./Pages/Error";
+import Success from "./Pages/Success";
 
 
 export default function App() {
@@ -77,6 +79,27 @@ export default function App() {
         <Navbar/>
         <AdminLogin/>
         <Footer/>
+        </>
+      )
+    },
+    {
+      path: "/success",
+      
+      element:(
+        <>
+
+        <Success/>
+        
+        </>
+      )
+    },
+
+    {
+      path: "/*",
+      
+      element:(
+        <>
+       <Error/>
         </>
       )
     },
