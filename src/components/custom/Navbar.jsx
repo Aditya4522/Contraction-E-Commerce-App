@@ -1,4 +1,4 @@
-import  { React, useState } from "react";
+import { React, useState } from "react";
 import { Link } from "react-router-dom";
 import { ModeToggle } from "./ModeToggle";
 import CartDrawer from "./CartDrawer";
@@ -8,14 +8,14 @@ import { Button } from "../ui/button";
 
 export default function Navbar() {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
-  
+
   return (
-    <nav className="flex justify-between items-center px-4 sm:m-0 lg:px-8 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-800 shadow-md dark:shadow-slate-800">
+    <nav className="sticky top-0 w-full bg-slate-100 dark:bg-gray-900 z-50 flex justify-between items-center px-4 sm:m-0 lg:px-8 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-800 shadow-md dark:shadow-slate-800">
       {/* Left Section: Toggle & Cart */}
       <div className="flex items-center gap-4 px-3">
         <ModeToggle />
         <CartDrawer />
-        {isAuthenticated ? ( 
+        {isAuthenticated ? (
           <LogoutToggle />
         ) : (
           <Link to="/login">

@@ -6,6 +6,7 @@ import Footer from "./components/custom/Footer";
 import SignUp from "./Pages/SignUp";
 import Login from "./Pages/Login";
 import Product from "./Pages/Product";
+import Checkout from "./Pages/Checkout";
 
 
 
@@ -23,6 +24,7 @@ export default function App() {
         </>
       )
     },
+    
     {
       path: "/signup",
       
@@ -52,6 +54,17 @@ export default function App() {
         <>
         <Navbar/>
         <Product/>
+        <Footer/>
+        </>
+      )
+    },
+    {
+      path: "/checkout",
+      
+      element:(
+        <>
+        <Navbar/>
+        <Checkout/>
         <Footer/>
         </>
       )
