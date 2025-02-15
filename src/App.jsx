@@ -1,8 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom"; // ✅ Correct import
-import { ThemeProvider } from "@/components/Theme/theme-provider"
+import { ThemeProvider } from "@/components/Theme/theme-provider";
 import Home from "./Pages/Home";
-import Navbar from "./components/custom/Navbar";
-import Footer from "./components/custom/Footer";
 import SignUp from "./Pages/SignUp";
 import Login from "./Pages/Login";
 import Product from "./Pages/Product";
@@ -10,107 +8,61 @@ import Checkout from "./Pages/Checkout";
 import AdminLogin from "./Pages/AdminLogin";
 import Error from "./Pages/Error";
 import Success from "./Pages/Success";
-
+import Rootlayout from "./layouts/RootLayout";
+import AdminRoot from "./layouts/AdminRoot";
 
 export default function App() {
   const router = createBrowserRouter([
-    
     {
       path: "/",
-      
-      element:(
-        <>
-        <Navbar/>
-        <Home/>
-        <Footer/>
-        </>
-      )
+      element: <Rootlayout children={<Home />} />,
     },
-    
+
     {
       path: "/signup",
-      
-      element:(
-        <>
-        <Navbar/>
-        <SignUp/>
-        <Footer/>
-        </>
-      )
+      element: <Rootlayout children={<SignUp />} />,
     },
     {
       path: "/login",
-      
-      element:(
-        <>
-        <Navbar/>
-        <Login/>
-        <Footer/>
-        </>
-      )
+
+      element: <Rootlayout children={<Login />} />,
     },
     {
       path: "/product",
-      
-      element:(
-        <>
-        <Navbar/>
-        <Product/>
-        <Footer/>
-        </>
-      )
+
+      element: <Rootlayout children={<Product />} />,
     },
     {
       path: "/checkout",
-      
-      element:(
-        <>
-        <Navbar/>
-        <Checkout/>
-        <Footer/>
-        </>
-      )
+
+      element: <Rootlayout children={<Checkout />} />,
     },
     {
       path: "/admin/login",
-      
-      element:(
-        <>
-        <Navbar/>
-        <AdminLogin/>
-        <Footer/>
-        </>
-      )
+
+      element: <Rootlayout children={<AdminLogin />} />,
+    },
+    {
+      path: "/admin/dashboard",
+
+      element: <AdminRoot children={ <h1>hello wold</h1>} />,
     },
     {
       path: "/success",
-      
-      element:(
-        <>
 
-        <Success/>
-        
-        </>
-      )
+      element: <Rootlayout children={<Success />} />,
     },
 
     {
       path: "/*",
-      
-      element:(
-        <>
-       <Error/>
-        </>
-      )
+
+      element: <Rootlayout children={<Error />} />,
     },
   ]);
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      
-    <RouterProvider router={router}/>
+      <RouterProvider router={router} />
     </ThemeProvider>
-  )
-
-
+  );
 }

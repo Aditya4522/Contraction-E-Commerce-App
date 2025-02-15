@@ -26,14 +26,11 @@ const ImagesArray = [
   },
 ];
 export default function Products() {
-  
   const [quantity, setQuantity] = useState(2);
-  const [availabilityMessage, setAvailabilityMessage] = useState()
+  const [availabilityMessage, setAvailabilityMessage] = useState();
   const [pincode, setPincode] = useState();
-  const [productPurchuse, setProductPurchuse] = useState(false)
-  const [address, setAddress] = useState()
-  
-  
+  const [productPurchuse, setProductPurchuse] = useState(false);
+  const [address, setAddress] = useState();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 py-5 sm:py-16  dark:from-gray-900 dark:to-black">
@@ -162,35 +159,49 @@ export default function Products() {
                   )}
                 </div>
                 {/* pincode input with button */}
-                  <div className="grid gap-3 ">
-                      <div className="flex gap-3">
-                        <Input placeholder="Enter Pincode" className="border-black dark:border-white" onChange={(e)=>setPincode(e.target.value)}/>
-                        <Button className="text-sm font-serif hover:scale-105 transition-all ease-in-out duration-300"> Check Availability</Button>
-                      </div>
-                      <p className="px-2 text-sm">{availabilityMessage}</p>
+                <div className="grid gap-3 ">
+                  <div className="flex gap-3">
+                    <Input
+                      placeholder="Enter Pincode"
+                      className="border-black dark:border-white"
+                      onChange={(e) => setPincode(e.target.value)}
+                    />
+                    <Button className="text-sm font-serif hover:scale-105 transition-all ease-in-out duration-300">
+                      {" "}
+                      Check Availability
+                    </Button>
                   </div>
-                  <div className="flex gap-3   items-start">
+                  <p className="px-2 text-sm">{availabilityMessage}</p>
+                </div>
+                <div className="flex gap-3   items-start">
                   <button className=" group relative px-8  py-1 sm:py-4 w-full overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 via-purple-500 to-pink-500 text-white hover:opacity-75 shadow-lg ">
-                  <div className="absolute inset-0 w-1/3 skew-x-[-20deg] group-hover:animate-[shine_1s_ease-in-out]" />
-                  <span className="relative font-semibold text-md sm:text-lg">
-                    Add ot card
-                  </span>
-                </button>
-                <button className=" group relative px-8 py-4 w-full overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 via-purple-500 to-pink-500 text-white hover:opacity-75 shadow-lg " onClick={()=>setProductPurchuse(true)}>
-                  <div className="absolute inset-0 w-1/3 skew-x-[-20deg] group-hover:animate-[shine_1s_ease-in-out]" />
-                  <span className="relative font-semibold text-lg">
-                    Buy now
-                  </span>
-                </button>
+                    <div className="absolute inset-0 w-1/3 skew-x-[-20deg] group-hover:animate-[shine_1s_ease-in-out]" />
+                    <span className="relative font-semibold text-md sm:text-lg">
+                      Add ot card
+                    </span>
+                  </button>
+                  <button
+                    className=" group relative px-8 py-4 w-full overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 via-purple-500 to-pink-500 text-white hover:opacity-75 shadow-lg "
+                    onClick={() => setProductPurchuse(true)}
+                  >
+                    <div className="absolute inset-0 w-1/3 skew-x-[-20deg] group-hover:animate-[shine_1s_ease-in-out]" />
+                    <span className="relative font-semibold text-lg">
+                      Buy now
+                    </span>
+                  </button>
                 </div>
                 {/* buy single order address */}
                 <div>
-                {productPurchuse &&(
-                  <div className="grid space-y-3 transition-all ease-in-out duration-300">
-                    <Input placeholder="Enter Your Address Here.." className="border-black dark:border-white" onChange={(e)=>setAddress(e.target.value)} />
-                    <Button className="w-fit px-3 ">Conform Order</Button>
-                  </div>
-                )}
+                  {productPurchuse && (
+                    <div className="grid space-y-3 transition-all ease-in-out duration-300">
+                      <Input
+                        placeholder="Enter Your Address Here.."
+                        className="border-black dark:border-white"
+                        onChange={(e) => setAddress(e.target.value)}
+                      />
+                      <Button className="w-fit px-3 ">Conform Order</Button>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -198,7 +209,7 @@ export default function Products() {
         </div>
       </main>
       {/* review section */}
-      <Reviews/>
+      <Reviews />
     </div>
   );
 }

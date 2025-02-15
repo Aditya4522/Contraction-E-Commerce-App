@@ -2,21 +2,20 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function Error() {
+  const [count, setCount] = useState(5);
 
-    const [count, setCount] = useState(5)
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-          setCount((prev) => prev - 1);
-        }, 1000);
-            const timeout = setTimeout(() => {
-          window.location.href = "/";
-        }, 5000);
-        return () => {
-          clearInterval(interval);
-          clearTimeout(timeout);
-        };
-      }, []);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCount((prev) => prev - 1);
+    }, 1000);
+    const timeout = setTimeout(() => {
+      window.location.href = "/";
+    }, 5000);
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timeout);
+    };
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100 dark:bg-gray-900 text-center p-6">
@@ -25,7 +24,7 @@ export default function Error() {
         Payment SuccessFully
       </h2>
       <p className="text-lg text-gray-700 dark:text-gray-300 mb-6">
-      Your payment was successful. We appreciate your business!
+        Your payment was successful. We appreciate your business!
       </p>
       <Link
         to="/"

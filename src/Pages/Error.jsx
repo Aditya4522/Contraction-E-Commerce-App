@@ -9,7 +9,8 @@ export default function Error() {
         Page Not Found
       </h2>
       <p className="text-lg text-gray-700 dark:text-gray-300 mb-6">
-        The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.
+        The page you are looking for might have been removed, had its name
+        changed, or is temporarily unavailable.
       </p>
       <Link
         to="/"
