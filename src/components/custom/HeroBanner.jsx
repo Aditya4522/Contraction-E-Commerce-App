@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-export default function  ImageCarousel () {
+export default function  HeroBanner () {
   const images = [
     { url: "https://images.pexels.com/photos/237950/pexels-photo-237950.jpeg?auto=compress&cs=tinysrgb&w=600", alt: "Slide 1" },
     { url: "https://images.pexels.com/photos/46167/iron-rods-reinforcing-bars-rods-steel-bars-46167.jpeg?auto=compress&cs=tinysrgb&w=600", alt: "Slide 2" },
