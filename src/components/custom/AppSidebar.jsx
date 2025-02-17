@@ -50,8 +50,8 @@ export default function AppSidebar() {
       <SidebarContent>
         <SidebarGroup>
             <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
+              {items.map((item ,idx) => (
+                <SidebarMenuItem key={idx}>
                   <SidebarMenuButton asChild>
                     <Link to={item.url}>
                       <item.icon />

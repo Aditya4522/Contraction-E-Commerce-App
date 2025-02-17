@@ -8,7 +8,10 @@ export default function AdminRoot({children}) {
       <AppSidebar />
       <main>
         <SidebarTrigger />
+        <div className="sm:m-10">
         {children}
+        </div>
+        
       </main>
     </SidebarProvider>
   );
