@@ -11,6 +11,7 @@ import Success from "./Pages/Success";
 import Rootlayout from "./layouts/RootLayout";
 import AdminRoot from "./layouts/AdminRoot";
 import CreateProducts from "./components/custom/CreateProducts";
+import AllProducts from "./components/custom/AllProducts";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -49,7 +50,11 @@ export default function App() {
 
       element: <AdminRoot children={<CreateProducts/>} />,
     },
-   
+    {
+      path: "/admin/dashboard/all-products",
+
+      element: <AdminRoot children={<AllProducts/>} />,
+    },
  
     {
       path: "/success",
