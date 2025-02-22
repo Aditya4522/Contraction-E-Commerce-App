@@ -11,7 +11,8 @@ import {Input} from "@/components/ui/input"
 
   const CategoryData = {
     tigger: "Category",
-    items: ["keyboard", "mouse", "headset", "laptop", "Mobile"],
+    items : ["cement", "bricks", "sand", "steel rods", "tiles", "wood planks", "paint"]
+
   };
   
   const priceData = {

@@ -12,6 +12,7 @@ import Rootlayout from "./layouts/RootLayout";
 import AdminRoot from "./layouts/AdminRoot";
 import CreateProducts from "./components/custom/CreateProducts";
 import AllProducts from "./components/custom/AllProducts";
+import Orders from "./components/custom/Orders";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -54,6 +55,11 @@ export default function App() {
       path: "/admin/dashboard/all-products",
 
       element: <AdminRoot children={<AllProducts/>} />,
+    },
+    {
+      path: "/admin/dashboard/orders",
+
+      element: <AdminRoot children={<Orders/>} />,
     },
  
     {

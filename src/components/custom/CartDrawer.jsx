@@ -17,7 +17,7 @@ export default function CartDrawer() {
     {
       id: 1,
       name: "apple",
-      price: 9,
+      price: 90,
       quantity: 1,
     },
     {
