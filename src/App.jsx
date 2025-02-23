@@ -13,6 +13,7 @@ import AdminRoot from "./layouts/AdminRoot";
 import CreateProducts from "./components/custom/CreateProducts";
 import AllProducts from "./components/custom/AllProducts";
 import Orders from "./components/custom/Orders";
+import Settings from "./components/custom/Settings";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -61,7 +62,11 @@ export default function App() {
 
       element: <AdminRoot children={<Orders/>} />,
     },
- 
+    {
+      path: "/admin/dashboard/settings",
+
+      element: <AdminRoot children={<Settings/>} />,
+    },
     {
       path: "/success",
 
