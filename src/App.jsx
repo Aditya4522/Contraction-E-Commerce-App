@@ -15,6 +15,8 @@ import AllProducts from "./components/custom/AllProducts";
 import Orders from "./components/custom/Orders";
 import Settings from "./components/custom/Settings";
 import Analytics from "./components/custom/Analytics";
+import { Provider } from "react-redux";
+import { store } from "@/redux/Store";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -89,7 +91,9 @@ export default function App() {
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <Provider store={store}>
       <RouterProvider router={router} />
+      </Provider>
     </ThemeProvider>
   );
 }

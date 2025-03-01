@@ -12,11 +12,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 export default function Analytics() {
   return (
-    <div className="w-screen md:w-[90vw] xl:w-[80vw] flex justify-center items-center">
+    <div className="w-full md:w-[90w] xl:w-[80vw] flex justify-center items-center ">
       <SidebarInset>
-        <div className="flex flex-1 flex-col gap-6 p-4">
+        <div className="flex flex-1 flex-col gap-6 p-4 ">
           {/* Overview Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-4">
             {[
               { title: "Total Sales", value: "₹100000", icon: <DollarSign size={18} /> },
               { title: "Users", value: "+5", icon: <Users2Icon size={18} /> },
@@ -39,11 +39,11 @@ export default function Analytics() {
           </div>
 
           {/* Chart & Recent Sales */}
-          <div className="flex flex-col lg:flex-row gap-4 w-full  ">
-            <div className="w-full lg:w-2/3">
+          <div className="flex flex-col lg:flex-row gap-1 w-full ">
+            <div className="w-full lg:w-2/3 ">
               <Chart1 />
             </div>
-            <div className="p-4 bg-muted/50 rounded-xl w-full mt-24 lg:w-1/3">
+            <div className="p-4 bg-muted/50 rounded-xl w-full mt-24 lg:w-1/3 items-center ">
               <h3 className="text-xl font-semibold">Recent Sales</h3>
               <p className="text-md font-medium text-gray-600">
                 You made 40 sales this month
