@@ -17,6 +17,7 @@ import Settings from "./components/custom/Settings";
 import Analytics from "./components/custom/Analytics";
 import { Provider } from "react-redux";
 import { store } from "@/redux/Store";
+import Myorders from "./Pages/Myorders";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -43,6 +44,11 @@ export default function App() {
       path: "/checkout",
 
       element: <Rootlayout children={<Checkout />} />,
+    },
+    {
+      path: "/orders",
+
+      element: <Rootlayout children={<Myorders />} />,
     },
     {
       path: "/admin/login",
