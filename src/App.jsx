@@ -18,6 +18,13 @@ import Analytics from "./components/custom/Analytics";
 import { Provider } from "react-redux";
 import { store } from "@/redux/Store";
 import Myorders from "./Pages/Myorders";
+import { Toaster } from "sonner";
+
+
+
+
+
+
 
 export default function App() {
   const router = createBrowserRouter([
@@ -98,6 +105,7 @@ export default function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <Provider store={store}>
+      <Toaster />
       <RouterProvider router={router} />
       </Provider>
     </ThemeProvider>
