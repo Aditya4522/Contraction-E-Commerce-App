@@ -2,12 +2,13 @@ import { React, useState } from "react";
 import { Link } from "react-router-dom";
 import { ModeToggle } from "./ModeToggle";
 import CartDrawer from "./CartDrawer";
-import { User } from "lucide-react";
 import LogoutToggle from "./LogoutToggle";
 import { Button } from "../ui/button";
+import { useSelector } from "react-redux";
+import { User } from "lucide-react";
 
 export default function Navbar() {
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const {isAuthenticated ,user} = useSelector((state)=>state.auth)
 
   return (
     <nav className="sticky top-0 w-full bg-slate-100 dark:bg-gray-900 z-50 flex justify-between items-center px-4 sm:m-0 lg:px-8 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-800 shadow-md dark:shadow-slate-800">
@@ -16,7 +17,7 @@ export default function Navbar() {
         <ModeToggle />
         <CartDrawer />
         {isAuthenticated ? (
-          <LogoutToggle />
+          <LogoutToggle user={user}/>
         ) : (
           <Link to="/login">
             <User className="cursor-pointer hover:scale-110 transition-all ease-out" />

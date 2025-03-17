@@ -2,29 +2,34 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
+ 
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { SetUserLogOut } from "@/redux/Slices/AuthSlice"; 
 
-import { Button } from "../ui/button";
-import { Link } from "react-router-dom";
+export default function LogoutToggle({ user }) {
+  const dispatch = useDispatch();
 
-export default function LogoutToggle() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
         <Avatar className="w-8 h-8">
-          <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback>CN</AvatarFallback>
+          {user?.image && <AvatarImage src={user.image} alt="User Avatar" />}
+          <AvatarFallback>
+            {user?.name?.slice(0, 2).toUpperCase()}
+          </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <Link to={"/orders"}>
-          <DropdownMenuItem>MyOrders</DropdownMenuItem>
+          <DropdownMenuItem>My Orders</DropdownMenuItem>
         </Link>
-        <DropdownMenuItem>Logout</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => dispatch(SetUserLogOut())}>
+          Logout
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

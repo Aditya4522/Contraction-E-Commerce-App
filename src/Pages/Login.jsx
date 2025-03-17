@@ -1,9 +1,46 @@
 import { Button } from "@/components/ui/button";
+import { setUserLogin } from "@/redux/Slices/AuthSlice";
+import axios from "axios";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export default function SignUp() {
   const [enabled, setEnabled] = useState(false);
+  const nevigate = useNavigate()
+  const dispatch = useDispatch();
+  const handleSumit = async (e) =>{
+
+    e.preventDefault();
+    const email = e.target.elements.email.value.trim();
+    const password = e.target.elements.password.value;
+
+    if (!email || !password) {
+      toast.error("Please fill all fields.");
+      return;
+    }
+    if (!enabled) {
+      toast.warning("You must accept the terms and conditions.");
+      return;
+    }
+
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/auth/login`,{
+        email,
+        password
+      });
+      const data = await res.data;
+      dispatch(setUserLogin(data))
+      toast.success(res.data.message);
+
+      
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Signup failed. Please try again.");
+    }
+    nevigate('/')
+
+  }
 
   return (
     <div className="min-h-fit py-12 px-5 flex items-center justify-center bg-gray-50  dark:bg-gray-900 transition-colors duration-200">
@@ -17,7 +54,7 @@ export default function SignUp() {
           </p>
         </div>
 
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={handleSumit}>
           <div className="space-y-4">
             <input
               placeholder="Email address"
