@@ -1,61 +1,141 @@
 import { Button } from "@/components/ui/button";
+import { setUserLogin } from "@/redux/Slices/AuthSlice";
+import axios from "axios";
 import { useState } from "react";
-import { Link } from "react-router-dom";
-
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export default function AdminLogin() {
   const [enabled, setEnabled] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
+  const validateUsername = (username) => {
+    return /^[a-zA-Z0-9._-]{3,20}$/.test(username);
+  };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
   
-
+    const username = e.target.elements.username.value.trim();
+    const password = e.target.elements.password.value.trim();
+  
+    if (!username || !password) {
+      toast.error("Username and Password are required.");
+      return;
+    }
+  
+    if (!validateUsername(username)) {
+      toast.error(
+        "Invalid username format. Use 3-20 letters, numbers, dots, or underscores."
+      );
+      return;
+    }
+  
+    if (password.length < 6) {
+      toast.error("Password must be at least 6 characters long.");
+      return;
+    }
+  
+    if (!enabled) {
+      toast.warning("You must accept the terms and conditions.");
+      return;
+    }
+  
+    setLoading(true);
+    try {
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/auth/admin-login`,
+        { username, password }
+      );
+  
+      const { token, user } = res.data;
+  
+      // ✅ Save user details in Redux store
+      dispatch(setUserLogin({ token, user }));
+  
+      // ✅ Save in localStorage with ID
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user)); // Ensures ID is stored
+  
+      toast.success("Login successful!");
+      navigate("/admin/dashboard");
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message || "Login failed. Please try again.";
+  
+      if (errorMessage.includes("username")) {
+        toast.error("Username not found. Please check your username.");
+      } else if (errorMessage.includes("password")) {
+        toast.error("Incorrect password. Try again.");
+      } else {
+        toast.error(errorMessage);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+  
   return (
-    <div className="min-h-fit py-12 px-5 flex items-center justify-center bg-gray-100  dark:bg-gray-900 transition-colors duration-200">
+    <div className="min-h-fit py-12 px-5 flex items-center justify-center bg-gray-100 dark:bg-gray-900 transition-colors duration-200">
       <div className="w-full max-w-md p-8 space-y-6 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl">
-       
         <div className="space-y-2 text-center">
           <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
-              Admin Login
+            Admin Login
           </h1>
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            Login to get started with our service
+            Sign in to access the admin dashboard.
           </p>
         </div>
 
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={handleSubmit}>
           <div className="space-y-4">
-         
-
-            <input 
-              placeholder="UserName Here..." 
-              type="text" 
-              name="usename"
-              className="w-full h-11 px-4 rounded-lg border border-gray-200 dark:border-gray-600 
+            <label
+              htmlFor="username"
+              className="text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
+              Username
+            </label>
+            <input
+              id="username"
+              placeholder="Enter username..."
+              type="text"
+              name="username"
+              className="w-full h-11 px-4 rounded-lg border border-gray-300 dark:border-gray-600 
                 bg-white dark:bg-gray-700 text-gray-900 dark:text-white
                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
                 placeholder-gray-500 dark:placeholder-gray-400"
-                required
+              required
             />
 
-
+            <label
+              htmlFor="password"
+              className="text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
+              Password
+            </label>
             <input
-              placeholder="Password Here.." 
-              type="password" 
+              id="password"
+              placeholder="Enter password..."
+              type="password"
               name="password"
-              className="w-full h-11 px-4 rounded-lg border border-gray-200 dark:border-gray-600 
+              className="w-full h-11 px-4 rounded-lg border border-gray-300 dark:border-gray-600 
                 bg-white dark:bg-gray-700 text-gray-900 dark:text-white
                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-                placeholder-gray-500 dark:placeholder-gray-400" required
+                placeholder-gray-500 dark:placeholder-gray-400"
+              required
             />
           </div>
 
           <div className="flex items-center space-x-2">
-            <input 
-              type="checkbox" 
-              id="terms" 
+            <input
+              type="checkbox"
+              id="terms"
               onChange={(e) => setEnabled(e.target.checked)}
               className="rounded border-gray-300 dark:border-gray-600 text-blue-600 
-                focus:ring-blue-500 dark:bg-gray-700" 
+                focus:ring-blue-500 dark:bg-gray-700"
             />
             <label
               htmlFor="terms"
@@ -68,15 +148,14 @@ export default function AdminLogin() {
 
           <Button
             type="submit"
-            disabled={!enabled}
+            disabled={!enabled || loading}
             className="w-full h-11 bg-blue-600 hover:bg-blue-700 text-white font-medium 
               rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed
               dark:bg-blue-500 dark:hover:bg-blue-600"
           >
-            Login
-          </Button >
+            {loading ? "Logging in..." : "Login"} {/* ✅ Show loading state */}
+          </Button>
         </form>
-
       </div>
     </div>
   );

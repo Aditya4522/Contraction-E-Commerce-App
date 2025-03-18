@@ -16,7 +16,7 @@ export default function SignUp() {
     const email = e.target.elements.email.value.trim();
     const password = e.target.elements.password.value;
 
-    // 🚨 Validation
+    // Validation
     if (!name || !phone || !email || !password) {
       toast.error("Please fill all fields.");
       return;
@@ -38,17 +38,35 @@ export default function SignUp() {
     }
 
     try {
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/auth/signup`, {
-        name,
-        phone,
-        email,
-        password,
-      });
+      //  Sign Up the User
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/auth/signup`,
+        { name, phone, email, password },
+        { withCredentials: true }
+      );
 
-      toast.success(res.data.message);
-      navigate("/login");
+      toast.success("Account created successfully!");
+
+      // Automatically Log In the User
+      const loginRes = await axios.post(
+        `${import.meta.env.VITE_API_URL}/auth/login`,
+        { email, password },
+        { withCredentials: true }
+      );
+
+      const { token, user } = loginRes.data;
+
+      // Store token & user info in localStorage
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+
+      toast.success(`Welcome, ${user.name}!`);
+
+      navigate("/");
     } catch (error) {
-      toast.error(error.response?.data?.message || "Signup failed. Please try again.");
+      toast.error(
+        error.response?.data?.message || "Signup failed. Please try again."
+      );
     }
   };
 

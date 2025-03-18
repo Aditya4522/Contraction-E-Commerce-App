@@ -8,16 +8,19 @@ import { toast } from "sonner";
 
 export default function SignUp() {
   const [enabled, setEnabled] = useState(false);
-  const nevigate = useNavigate()
+  const [errors, setErrors] = useState({ email: false, password: false });
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const handleSumit = async (e) =>{
 
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const email = e.target.elements.email.value.trim();
     const password = e.target.elements.password.value;
+    let newErrors = { email: !email, password: !password };
 
     if (!email || !password) {
       toast.error("Please fill all fields.");
+      setErrors(newErrors);
       return;
     }
     if (!enabled) {
@@ -26,57 +29,57 @@ export default function SignUp() {
     }
 
     try {
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/auth/login`,{
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/auth/login`, {
         email,
-        password
+        password,
       });
+
       const data = await res.data;
-      dispatch(setUserLogin(data))
+      dispatch(setUserLogin(data));
       toast.success(res.data.message);
+      navigate("/"); 
 
-      
     } catch (error) {
-      toast.error(error.response?.data?.message || "Signup failed. Please try again.");
+      toast.error(error.response?.data?.message || "Invalid email or password.");
+      setErrors({ email: true, password: true });
     }
-    nevigate('/')
-
-  }
+  };
 
   return (
-    <div className="min-h-fit py-12 px-5 flex items-center justify-center bg-gray-50  dark:bg-gray-900 transition-colors duration-200">
+    <div className="min-h-fit py-12 px-5 flex items-center justify-center bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
       <div className="w-full max-w-md p-8 space-y-6 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl">
         <div className="space-y-2 text-center">
           <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
-            Login your account
+            Login to your account
           </h1>
           <p className="text-sm text-gray-500 dark:text-gray-400">
             Login to get started with our service
           </p>
         </div>
 
-        <form className="space-y-4" onSubmit={handleSumit}>
+        <form className="space-y-4" onSubmit={handleSubmit}>
           <div className="space-y-4">
             <input
               placeholder="Email address"
               type="email"
               name="email"
-              className="w-full h-11 px-4 rounded-lg border border-gray-200 dark:border-gray-600 
+              className={`w-full h-11 px-4 rounded-lg border ${errors.email ? "border-red-500" : "border-gray-200 dark:border-gray-600"}
                 bg-white dark:bg-gray-700 text-gray-900 dark:text-white
                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-                placeholder-gray-500 dark:placeholder-gray-400"
-              required
+                placeholder-gray-500 dark:placeholder-gray-400`}
             />
+            {errors.email && <p className="text-red-500 text-sm">Enter a valid email.</p>}
 
             <input
               placeholder="Password"
               type="password"
               name="password"
-              className="w-full h-11 px-4 rounded-lg border border-gray-200 dark:border-gray-600 
+              className={`w-full h-11 px-4 rounded-lg border ${errors.password ? "border-red-500" : "border-gray-200 dark:border-gray-600"}
                 bg-white dark:bg-gray-700 text-gray-900 dark:text-white
                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-                placeholder-gray-500 dark:placeholder-gray-400"
-              required
+                placeholder-gray-500 dark:placeholder-gray-400`}
             />
+            {errors.password && <p className="text-red-500 text-sm">Enter a valid password.</p>}
           </div>
 
           <div className="flex items-center space-x-2">
@@ -109,7 +112,7 @@ export default function SignUp() {
 
         <div className="text-center">
           <p className="text-sm text-gray-600 dark:text-gray-300">
-            Create new account?{" "}
+            Create a new account?{" "}
             <Link
               to={"/signup"}
               className="font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 

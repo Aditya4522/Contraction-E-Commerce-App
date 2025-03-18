@@ -19,7 +19,7 @@ import { Provider } from "react-redux";
 import { store } from "@/redux/Store";
 import Myorders from "./Pages/Myorders";
 import { Toaster } from "sonner";
-
+import ProtectedRoute from "./components/custom/ProtectedRoute";
 
 
 
@@ -35,12 +35,12 @@ export default function App() {
 
     {
       path: "/signup",
-      element: <Rootlayout children={<SignUp />} />,
+      element: <ProtectedRoute requiredRole='user'><Rootlayout children={<SignUp />} /></ProtectedRoute> ,
     },
     {
       path: "/login",
 
-      element: <Rootlayout children={<Login />} />,
+      element:<ProtectedRoute><Rootlayout children={<Login />} /></ProtectedRoute> ,
     },
     {
       path: "/product",
@@ -50,43 +50,50 @@ export default function App() {
     {
       path: "/checkout",
 
-      element: <Rootlayout children={<Checkout />} />,
+      element: <ProtectedRoute requiredRole='user'><Rootlayout children={<Checkout />} /></ProtectedRoute> ,
     },
     {
       path: "/orders",
 
-      element: <Rootlayout children={<Myorders />} />,
+      element: <ProtectedRoute requiredRole="user"><Rootlayout children={<Myorders />} /></ProtectedRoute>
+      ,
     },
     {
       path: "/admin/login",
 
-      element: <Rootlayout children={<AdminLogin />} />,
+      element: <ProtectedRoute requiredRole='admin'><Rootlayout children={<AdminLogin />} /></ProtectedRoute> ,
     },
      // Admin routes go here
-    {
+     {
       path: "/admin/dashboard",
-
-      element: <AdminRoot children={<CreateProducts/>} />,
+      element: (
+        <ProtectedRoute requiredRole="admin">
+          <AdminRoot>
+            <CreateProducts />
+          </AdminRoot>
+        </ProtectedRoute>
+      ),
     },
+    
     {
       path: "/admin/dashboard/all-products",
 
-      element: <AdminRoot children={<AllProducts/>} />,
+      element:<ProtectedRoute requiredRole="admin"><AdminRoot children={<AllProducts/>} /></ProtectedRoute>  ,
     },
     {
       path: "/admin/dashboard/orders",
 
-      element: <AdminRoot children={<Orders/>} />,
+      element: <ProtectedRoute><AdminRoot children={<Orders/>} /></ProtectedRoute> ,
     },
     {
       path: "/admin/dashboard/settings",
 
-      element: <AdminRoot children={<Settings/>} />,
+      element:<ProtectedRoute requiredRole="admin"><AdminRoot children={<Settings/>} /></ProtectedRoute> ,
     },
     {
       path: "/admin/dashboard/analytics",
 
-      element: <AdminRoot children={<Analytics/>} />,
+      element:<ProtectedRoute requiredRole="admin"><AdminRoot children={<Analytics/>} /> requiredRole="admin"</ProtectedRoute> ,
     },
   
     {
