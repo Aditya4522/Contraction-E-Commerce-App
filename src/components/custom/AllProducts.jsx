@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Edit, Search, ShoppingCartIcon } from "lucide-react";
@@ -30,8 +30,27 @@ import {
 } from "../ui/dialog";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import { Textarea } from "../ui/textarea";
+import axios from "axios";
+import { useDispatch } from "react-redux";
 
 export default function AllProducts() {
+  const [category, setCategory] = useState("all");
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const getFilterProducts = async () => {
+      const res = axios.get(
+        import.meta.env.VITE_API_URL +
+          `/get-prodicts?category${category}&search=${searchTerm}`
+      );
+      const data = res.data;
+
+      dispatch(setPrducts(data.data))
+    };
+    getFilterProducts();
+  }, [category, searchTerm]);
   return (
     <div className="w-full max-w-screen-xl   mx-auto ">
       <h1 className="text-3xl font-bold mb-4 px-4">Our Products</h1>
@@ -94,7 +113,7 @@ export default function AllProducts() {
           <CardHeader className="p-0">
             <div className="relative">
               <img
-                src="https://media.istockphoto.com/id/1339716650/photo/brick-cart.webp?a=1&b=1&s=612x612&w=0&k=20&c=EwgABAw9pnrfF3HOvPOVl5H5MUDmlxyM9-6g3I_gxqY="
+                src=""
                 alt="Product"
                 className="w-full h-48 object-cover rounded-t-lg"
               />
@@ -130,7 +149,7 @@ export default function AllProducts() {
       </div>
 
       {/* Edit to Cart Dialog */}
-      <Dialog >
+      <Dialog>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Edit Product</DialogTitle>
@@ -205,7 +224,6 @@ export default function AllProducts() {
               <DialogFooter>
                 <Button type="summit">Save Changes</Button>
               </DialogFooter>
-
             </div>
           </form>
         </DialogContent>
