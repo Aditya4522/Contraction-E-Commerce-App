@@ -243,8 +243,8 @@ export default function CreateProducts() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    {PRODUCT_CATEGORIES.map((category) => (
-                      <SelectItem key={category.value} value={category.value}>
+                    {PRODUCT_CATEGORIES.map((category,idx) => (
+                      <SelectItem key={idx} value={category.value}>
                         {category.label}
                       </SelectItem>
                     ))}

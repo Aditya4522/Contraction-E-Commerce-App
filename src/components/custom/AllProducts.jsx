@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
-import { Edit, Search, ShoppingCartIcon } from "lucide-react";
+import { Edit, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
 import {
   Select,
   SelectContent,
@@ -23,40 +22,138 @@ import {
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogFooter,
 } from "../ui/dialog";
-import { DialogTrigger } from "@radix-ui/react-dialog";
 import { Textarea } from "../ui/textarea";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setProducts } from "@/redux/Slices/ProductSlice";
+import { toast } from "sonner";
+import useErrorLogout from "@/hooks/use-error-logout";
 
 export default function AllProducts() {
+  const { products } = useSelector((state) => state.product);
   const [category, setCategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editProduct, setEditProduct] = useState(null);
 
   const dispatch = useDispatch();
+  const handleLogOUtError = useErrorLogout()
 
   useEffect(() => {
     const getFilterProducts = async () => {
-      const res = axios.get(
-        import.meta.env.VITE_API_URL +
-          `/get-prodicts?category${category}&search=${searchTerm}`
-      );
-      const data = res.data;
-
-      dispatch(setPrducts(data.data))
+      try {
+        const res = await axios.get(
+          `${
+            import.meta.env.VITE_API_URL
+          }/get-products?category=${category}&search=${searchTerm}`
+        );
+        dispatch(setProducts(res.data.data));
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
     };
     getFilterProducts();
-  }, [category, searchTerm]);
+  }, [category, searchTerm, dispatch]);
+
+  const blacklistProduct = async (id) => {
+    try {
+      const res = await axios.put(
+        `${import.meta.env.VITE_API_URL}/blacklist-product/${id}`,
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      const { message } = res.data;
+      toast.success(message);
+    } catch (error) {
+      console.error("Error Blacklisting Product:", error);
+      toast.error("Error Blacklisting Product");
+    }
+  };
+
+  const removeFromBlacklist = async (id) => {
+    try {
+      const res = await axios.put(
+        `${import.meta.env.VITE_API_URL}/remove-blacklist/${id}`,
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      const { message } = res.data;
+      toast.success(message);
+    } catch (error) {
+      console.error("Error Removing Product from Blacklist:", error);
+      toast.error("Error Removing Product from Blacklist");
+    }
+  };
+
+  const handleEdit = (product) => {
+    setIsEditModalOpen(true);
+    setEditProduct(product);
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+    const updatedProduct = {
+      ...editProduct,
+      name: formData.get("name"),
+      description: formData.get("description"),
+      price: parseFloat(formData.get("price")),
+      category: formData.get("category"),
+    };
+
+    dispatch(
+      setProducts(
+        products.map((p) => (p._id === updatedProduct._id ? updatedProduct : p))
+      )
+    );
+
+    try {
+      const res = await axios.put(
+        `${import.meta.env.VITE_API_URL}/update-product/${editProduct._id}`,
+        {
+          name: updatedProduct.name,
+          description: updatedProduct.description,
+          price: updatedProduct.price,
+          category: updatedProduct.category,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      toast.success("Updated successfully");
+      setIsEditModalOpen(false);
+      setEditProduct(null);
+    } catch (error) {
+      console.log("Error updating product:", error.message);
+      toast.error("Error updating product");
+      handleLogOUtError(error, "Error updating product");
+
+    }
+  };
+
   return (
-    <div className="w-full max-w-screen-xl   mx-auto ">
+    <div className="w-full max-w-screen-xl mx-auto">
       <h1 className="text-3xl font-bold mb-4 px-4">Our Products</h1>
+
       <form className="flex flex-wrap gap-4 px-4 mb-2">
-        {/* Search Input */}
-        <div className="flex-1 min-w-[300px] sm:min-w-[500px] lg:min-w-[600px]">
+        <div className="flex-1 min-w-[300px]">
           <Label className="text-gray-600" htmlFor="search">
             Search Products
           </Label>
@@ -67,6 +164,8 @@ export default function AllProducts() {
               name="search"
               placeholder="Search Products..."
               className="pl-10 w-full"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
             <Search
               className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-600"
@@ -75,156 +174,76 @@ export default function AllProducts() {
           </div>
         </div>
 
-        {/* Category Select */}
         <div className="flex-1 min-w-[200px]">
           <Label htmlFor="category" className="text-gray-600">
             Category
           </Label>
-          <Select name="category" required>
+          <Select value={category} onValueChange={setCategory}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select Category" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="rebars">REBARS (सरिया)</SelectItem>
-                <SelectItem value="buzzerfoot">Buzzerfoot (बजरफुट)</SelectItem>
-                <SelectItem value="gravel">Gravel (बजरी)</SelectItem>
-                <SelectItem value="cement">Cement (सीमेंट)</SelectItem>
-                <SelectItem value="wood">
-                  Wood Material (लकड़ी सामग्री)
-                </SelectItem>
-                <SelectItem value="bricks">Bricks (ईंटें)</SelectItem>
-                <SelectItem value="sand">Sand (रेत)</SelectItem>
-                <SelectItem value="tiles">Tiles (टाइल्स)</SelectItem>
-                <SelectItem value="paint">Paint (पेंट)</SelectItem>
-                <SelectItem value="pipes">Pipes (पाइप्स)</SelectItem>
-                <SelectItem value="electrical">
-                  Electrical (इलेक्ट्रिकल)
-                </SelectItem>
+                <SelectItem value="all">All Categories</SelectItem>
+                <SelectItem value="rebars">REBARS</SelectItem>
+                <SelectItem value="cement">Cement</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
         </div>
       </form>
 
-      {/* Products List */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 px-4 mt-4 ">
-        <Card className="w-80 shadow-lg  mx-auto">
-          <CardHeader className="p-0">
-            <div className="relative">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 px-4 mt-4">
+        {products?.map((product) => (
+          <Card key={product._id} className="shadow-lg">
+            <CardHeader>
               <img
-                src=""
-                alt="Product"
+                src={product.image || "default_image_url_here"}
+                alt={product.name}
                 className="w-full h-48 object-cover rounded-t-lg"
               />
-            </div>
-          </CardHeader>
-          <CardContent className="pt-2 px-2">
-            <CardTitle className="text-xl font-bold mb-1">
-              Premium Headphones
-            </CardTitle>
-
-            <CardDescription className="text-gray-600">
-              High-quality wireless headphones with noise cancellation and
-              premium sound quality.
-            </CardDescription>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-2xl font-bold text-blue-600">
-                {" "}
-                &#8377; 299.99
-              </span>
-              <span className="text-sm text-gray-500 line-through">
-                &#8377;399.99
-              </span>
-            </div>
-          </CardContent>
-          <CardFooter className="flex gap-5 px-2">
-            <Button className="flex-1 w-5  " variant="outline">
-              <Edit className="w-4 h-4 mr-2" />
-              Edit
-            </Button>
-            <Button className="flex-1">BlackList Product</Button>
-          </CardFooter>
-        </Card>
+            </CardHeader>
+            <CardContent>
+              <CardTitle>{product.name}</CardTitle>
+              <CardDescription>{product.description}</CardDescription>
+              <p className="text-2xl font-bold text-blue-600">
+                &#8377; {product.price}
+              </p>
+            </CardContent>
+            <CardFooter className="flex gap-4">
+              <Button variant="outline" onClick={() => handleEdit(product)}>
+                <Edit size={16} /> Edit
+              </Button>
+              <Button onClick={() => blacklistProduct(product._id)}>
+                Blacklist
+              </Button>
+            </CardFooter>
+          </Card>
+        ))}
       </div>
 
-      {/* Edit to Cart Dialog */}
-      <Dialog>
+      <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Edit Product</DialogTitle>
           </DialogHeader>
-          <form>
-            <div className="grid  gap-2">
-              <div className="grid items-center ">
-                <Label htmlFor="name" className="text-gray-600">
-                  Name
-                </Label>
-                <Input
-                  type="text"
-                  id="name"
-                  name="name"
-                  className="mb-2 mt-2 "
-                />
-              </div>
-              <div className="grid items-center gap-4">
-                <Label htmlFor="description" className="text-gray-600">
-                  Description
-                </Label>
-                <Textarea
-                  type="text"
-                  id="description"
-                  name="description"
-                  className="mb-2 "
-                />
-              </div>
-              <div className="grid items-center gap-4">
-                <Label htmlFor="price" className="text-gray-600">
-                  Price
-                </Label>
-                <Input
-                  type="number"
-                  id="price"
-                  name="price"
-                  className="mb-2 "
-                />
-              </div>
-              {/* select trigger */}
-              <div className="flex-1 min-w-[200px]">
-                <Label htmlFor="category" className="text-gray-600 ">
-                  Category
-                </Label>
-                <Select name="category" required>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select Category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectItem value="rebars">REBARS (सरिया)</SelectItem>
-                      <SelectItem value="buzzerfoot">
-                        Buzzerfoot (बजरफुट)
-                      </SelectItem>
-                      <SelectItem value="gravel">Gravel (बजरी)</SelectItem>
-                      <SelectItem value="cement">Cement (सीमेंट)</SelectItem>
-                      <SelectItem value="wood">
-                        Wood Material (लकड़ी सामग्री)
-                      </SelectItem>
-                      <SelectItem value="bricks">Bricks (ईंटें)</SelectItem>
-                      <SelectItem value="sand">Sand (रेत)</SelectItem>
-                      <SelectItem value="tiles">Tiles (टाइल्स)</SelectItem>
-                      <SelectItem value="paint">Paint (पेंट)</SelectItem>
-                      <SelectItem value="pipes">Pipes (पाइप्स)</SelectItem>
-                      <SelectItem value="electrical">
-                        Electrical (इलेक्ट्रिकल)
-                      </SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </div>
-              <DialogFooter>
-                <Button type="summit">Save Changes</Button>
-              </DialogFooter>
-            </div>
+          <form onSubmit={handleEditSubmit}>
+            <Label>Name</Label>
+            <Input name="name" defaultValue={editProduct?.name} />
+            <Label>Description</Label>
+            <Textarea
+              name="description"
+              defaultValue={editProduct?.description}
+            />
+            <Label>Price</Label>
+            <Input
+              type="number"
+              name="price"
+              defaultValue={editProduct?.price}
+            />
+            <DialogFooter>
+              <Button type="submit">Save Changes</Button>
+            </DialogFooter>
           </form>
         </DialogContent>
       </Dialog>
