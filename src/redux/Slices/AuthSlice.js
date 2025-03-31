@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// Helper functions for localStorage operations
 const getStoredRole = () => localStorage.getItem("role") || "";
 const getStoredUser = () => {
   try {

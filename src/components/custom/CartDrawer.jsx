@@ -10,58 +10,73 @@ import {
 } from "@/components/ui/drawer";
 import { Button } from "../ui/button";
 import { ShoppingCart } from "lucide-react";
-import { Badge } from "@/components/ui/badge"; // ✅ Corrected import
+import { Badge } from "@/components/ui/badge";
+import { useSelector } from "react-redux";
 
 export default function CartDrawer() {
-  const CartItems = [
-    {
-      id: 1,
-      name: "apple",
-      price: 90,
-      quantity: 1,
-    },
-    {
-      id: 2,
-      name: "apple",
-      price: 5,
-      quantity: 1,
-    },
-    {
-      id: 3,
-      name: "apple",
-      price: 12,
-      quantity: 1,
-    },
-  ];
-  const TotalQuantity = CartItems.reduce((acc, item) => acc + item.quantity, 0);
-  const TotalPrice = CartItems.reduce((acc, item) => acc + item.price*item.quantity, 0);
+  const { cartItems, totalQuantity, totalPrice } = useSelector(
+    (state) => state.cart
+  );
 
   return (
     <Drawer>
-      <DrawerTrigger  className="relative cursor-pointer  hover:scale-110 transition-all ease-in-out ">
-        <div className="flex ">
-        {TotalQuantity > 0 && (
-       <Badge className="absolute -top-2 -right-2 
-       
-       bg-black text-white border border-black 
-       dark:bg-white dark:text-black dark:border-white 
-       px-1 py-0.7 text-[13px] rounded-full ">
-{TotalQuantity}
-</Badge>
-
-        )}
-        <ShoppingCart  className="flex items-center"/>
+      <DrawerTrigger className="relative cursor-pointer hover:scale-110 transition-all ease-in-out">
+        <div className="flex items-center">
+          {totalQuantity > 0 && (
+            <Badge
+              className="absolute -top-2 -right-2 bg-black text-white border border-black 
+              dark:bg-white dark:text-black dark:border-white px-2 py-0.5 text-xs rounded-full"
+            >
+              {totalQuantity}
+            </Badge>
+          )}
+          <ShoppingCart className="w-6 h-6" />
         </div>
-       
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader>
-          <DrawerTitle>TOtal Quantity {TotalQuantity }</DrawerTitle>
-          <DrawerDescription>Total Price {TotalPrice}</DrawerDescription>
+          <DrawerTitle>Shopping Cart</DrawerTitle>
+          {totalQuantity > 0 ? (
+            <DrawerDescription>
+              Total Price: &#8377;
+              {totalPrice.toFixed(2)}
+            </DrawerDescription>
+          ) : (
+            <DrawerDescription>Your cart is empty</DrawerDescription>
+          )}
         </DrawerHeader>
+
+        {totalQuantity > 0 && (
+          <div className="px-4 py-2 space-y-2">
+            {cartItems.map((item) => (
+              <div
+                key={item._id}
+                className="flex items-center justify-between border-b py-2"
+              >
+                <div className="flex items-center space-x-4">
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="w-12 h-12 object-cover rounded"
+                  />
+                  <div>
+                    <p className="text-sm font-semibold">{item.name}</p>
+                    <p className="text-xs text-gray-500">
+                      Qty: {item.quantity}
+                    </p>
+                  </div>
+                </div>
+                <p className="text-sm font-semibold">
+                  {" "}
+                  {(item.price * item.quantity).toFixed(2)}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
+
         <DrawerFooter>
-          <Button>Submit</Button>
-          
+          <Button disabled={totalQuantity === 0}>Checkout</Button>
         </DrawerFooter>
       </DrawerContent>
     </Drawer>

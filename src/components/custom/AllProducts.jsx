@@ -36,10 +36,10 @@ import useErrorLogout from "@/hooks/use-error-logout";
 export default function AllProducts() {
   const { products } = useSelector((state) => state.product);
   const [category, setCategory] = useState("all");
-  const [searchTerm, setSearchTerm] = useState("");
+  const [search, setSearch] = useState("");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editProduct, setEditProduct] = useState(null);
-
+  
   const dispatch = useDispatch();
   const handleLogOUtError = useErrorLogout()
 
@@ -49,15 +49,17 @@ export default function AllProducts() {
         const res = await axios.get(
           `${
             import.meta.env.VITE_API_URL
-          }/get-products?category=${category}&search=${searchTerm}`
+          }/get-products?category=${category}&search=${search}`
         );
         dispatch(setProducts(res.data.data));
       } catch (error) {
         console.error("Error fetching products:", error);
       }
     };
+    console.log("allProducts",products);
+
     getFilterProducts();
-  }, [category, searchTerm, dispatch]);
+  }, [category, search, dispatch]);
 
   const blacklistProduct = async (id) => {
     try {
@@ -164,8 +166,8 @@ export default function AllProducts() {
               name="search"
               placeholder="Search Products..."
               className="pl-10 w-full"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
             />
             <Search
               className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-600"

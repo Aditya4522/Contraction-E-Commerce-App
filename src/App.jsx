@@ -43,7 +43,7 @@ export default function App() {
       element:<ProtectedRoute><Rootlayout children={<Login />} /></ProtectedRoute> ,
     },
     {
-      path: "/product",
+      path: "/product/:id",
 
       element: <Rootlayout children={<Product />} />,
     },
