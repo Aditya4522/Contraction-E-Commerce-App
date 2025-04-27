@@ -1,5 +1,9 @@
 # [CTM Store - *(Working)](https://ctmstore-adityas-projects-f678353b.vercel.app/) #
 
+CTM Store (Construction & Trade Materials Store) is a full-featured e-commerce platform designed specifically for the construction industry. It connects customers, suppliers, and contractors in one place, offering a seamless shopping experience for all types of building materials — from cement, bricks, and steel to plumbing, electrical supplies, and more.
+
+---
+
 ## 🛠️ Tech Stack & Tools Used
 
 ### 🧩 Frontend
