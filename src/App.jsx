@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom"; // ✅ Correct import
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ThemeProvider } from "@/components/Theme/theme-provider";
 import Home from "./Pages/Home";
 import SignUp from "./Pages/SignUp";
@@ -21,11 +21,6 @@ import Myorders from "./Pages/Myorders";
 import { Toaster } from "sonner";
 import ProtectedRoute from "./components/custom/ProtectedRoute";
 
-
-
-
-
-
 export default function App() {
   const router = createBrowserRouter([
     {
@@ -35,12 +30,20 @@ export default function App() {
 
     {
       path: "/signup",
-      element: <ProtectedRoute requiredRole='user'><Rootlayout children={<SignUp />} /></ProtectedRoute> ,
+      element: (
+        <ProtectedRoute requiredRole="user">
+          <Rootlayout children={<SignUp />} />
+        </ProtectedRoute>
+      ),
     },
     {
       path: "/login",
 
-      element:<ProtectedRoute><Rootlayout children={<Login />} /></ProtectedRoute> ,
+      element: (
+        <ProtectedRoute>
+          <Rootlayout children={<Login />} />
+        </ProtectedRoute>
+      ),
     },
     {
       path: "/product/:id",
@@ -50,21 +53,32 @@ export default function App() {
     {
       path: "/checkout",
 
-      element: <ProtectedRoute requiredRole='user'><Rootlayout children={<Checkout />} /></ProtectedRoute> ,
+      element: (
+        <ProtectedRoute requiredRole="user">
+          <Rootlayout children={<Checkout />} />
+        </ProtectedRoute>
+      ),
     },
     {
       path: "/orders",
 
-      element: <ProtectedRoute requiredRole="user"><Rootlayout children={<Myorders />} /></ProtectedRoute>
-      ,
+      element: (
+        <ProtectedRoute requiredRole="user">
+          <Rootlayout children={<Myorders />} />
+        </ProtectedRoute>
+      ),
     },
     {
       path: "/admin/login",
 
-      element: <ProtectedRoute requiredRole='admin'><Rootlayout children={<AdminLogin />} /></ProtectedRoute> ,
+      element: (
+        <ProtectedRoute requiredRole="admin">
+          <Rootlayout children={<AdminLogin />} />
+        </ProtectedRoute>
+      ),
     },
-     // Admin routes go here
-     {
+    // Admin routes go here
+    {
       path: "/admin/dashboard",
       element: (
         <ProtectedRoute requiredRole="admin">
@@ -74,28 +88,44 @@ export default function App() {
         </ProtectedRoute>
       ),
     },
-    
+
     {
       path: "/admin/dashboard/all-products",
 
-      element:<ProtectedRoute requiredRole="admin"><AdminRoot children={<AllProducts/>} /></ProtectedRoute>  ,
+      element: (
+        <ProtectedRoute requiredRole="admin">
+          <AdminRoot children={<AllProducts />} />
+        </ProtectedRoute>
+      ),
     },
     {
       path: "/admin/dashboard/orders",
 
-      element: <ProtectedRoute><AdminRoot children={<Orders/>} /></ProtectedRoute> ,
+      element: (
+        <ProtectedRoute>
+          <AdminRoot children={<Orders />} />
+        </ProtectedRoute>
+      ),
     },
     {
       path: "/admin/dashboard/settings",
 
-      element:<ProtectedRoute requiredRole="admin"><AdminRoot children={<Settings/>} /></ProtectedRoute> ,
+      element: (
+        <ProtectedRoute requiredRole="admin">
+          <AdminRoot children={<Settings />} />
+        </ProtectedRoute>
+      ),
     },
     {
       path: "/admin/dashboard/analytics",
 
-      element:<ProtectedRoute requiredRole="admin"><AdminRoot children={<Analytics/>} /> requiredRole="admin"</ProtectedRoute> ,
+      element: (
+        <ProtectedRoute requiredRole="admin">
+          <AdminRoot children={<Analytics />} /> requiredRole="admin"
+        </ProtectedRoute>
+      ),
     },
-  
+
     {
       path: "/success",
 
@@ -112,8 +142,8 @@ export default function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <Provider store={store}>
-      <Toaster />
-      <RouterProvider router={router} />
+        <Toaster />
+        <RouterProvider router={router} />
       </Provider>
     </ThemeProvider>
   );

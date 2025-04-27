@@ -10,8 +10,10 @@ import Reviews from "@/components/custom/Reviews";
 import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "@/redux/Slices/CartSlice";
+import { useRazorpay } from "@/hooks/use-razorpay";
 
 export default function Products() {
+  const {generatePayment,verifyPayment} = useRazorpay()
   const { id } = useParams();
   const { isAuthenticated,role } = useSelector((state) => state.auth);
   const navigate = useNavigate();
@@ -91,6 +93,7 @@ export default function Products() {
         image: product.images[0]?.url,
         color: selectedColor,
         stock: product.stock,
+        blacklisted:product.blacklisted,
       })
     );
 
@@ -98,6 +101,49 @@ export default function Products() {
     toast("Product added to Cart");
   };
 
+  const handleBuyNow = async () => {
+    if (!isAuthenticated) {
+      toast.error("Please login to continue.");
+      navigate("/login");
+      return;
+    }
+  
+    if (quantity > product.stock) {
+      toast("Product out of stock.");
+      return;
+    }
+  
+    if (product.blacklisted) {
+      toast("This product has been blacklisted.");
+      return;
+    }
+  
+    if (!selectedColor) {
+      toast("Please choose a color.");
+      return;
+    }
+  
+    const order = await generatePayment(product.price * quantity);
+  
+    if (!order) {
+      toast.error("Failed to initiate payment.");
+      return;
+    }
+  
+    const productArray = [
+      {
+        id: product._id,
+        quantity,
+        color: selectedColor,
+        image: product.image,
+        name: product.title,
+      },
+    ];
+  
+    await verifyPayment(productArray, address, order);
+    setProductPurchuse(false);
+  };
+  
   const calculateEMI = (price) =>
     (Math.round((price / 12) * 100) / 100).toFixed(2);
 
@@ -282,7 +328,7 @@ export default function Products() {
                       className="border-black dark:border-white"
                       onChange={(e) => setAddress(e.target.value)}
                     />
-                    <Button className="w-fit px-3">Confirm Order</Button>
+                    <Button className="w-fit px-3" onClick={handleBuyNow}>Confirm Order</Button>
                   </div>
                 )}
               </div>

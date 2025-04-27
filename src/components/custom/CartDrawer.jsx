@@ -12,6 +12,7 @@ import { Button } from "../ui/button";
 import { ShoppingCart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useSelector } from "react-redux";
+import CartProduct from "./CartProduct";
 
 export default function CartDrawer() {
   const { cartItems, totalQuantity, totalPrice } = useSelector(
@@ -46,34 +47,15 @@ export default function CartDrawer() {
           )}
         </DrawerHeader>
 
-        {totalQuantity > 0 && (
-          <div className="px-4 py-2 space-y-2">
-            {cartItems.map((item) => (
-              <div
-                key={item._id}
-                className="flex items-center justify-between border-b py-2"
-              >
-                <div className="flex items-center space-x-4">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-12 h-12 object-cover rounded"
-                  />
-                  <div>
-                    <p className="text-sm font-semibold">{item.name}</p>
-                    <p className="text-xs text-gray-500">
-                      Qty: {item.quantity}
-                    </p>
-                  </div>
-                </div>
-                <p className="text-sm font-semibold">
-                  {" "}
-                  {(item.price * item.quantity).toFixed(2)}
-                </p>
-              </div>
-            ))}
-          </div>
-        )}
+        <div className="flex flex-col sm:flex-row  justify-start gap-3 h-[70vh] overflow-y-scroll sm:overflow-hidden sm:h-auto mx-3 ">
+          {cartItems.length === 0 ? (
+            <p>No thing show please add products cartitems</p>
+          ) : (
+            cartItems.map((item) => <CartProduct key={item._id} {...item} />)
+          )}
+        </div>
+
+      
 
         <DrawerFooter>
           <Button disabled={totalQuantity === 0}>Checkout</Button>
