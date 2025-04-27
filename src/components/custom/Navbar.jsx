@@ -26,7 +26,7 @@ export default function Navbar() {
       </div>
 
       {/* Logo */}
-      <Link to="/" className="text-2xl font-bold text-black dark:text-white">
+      <Link to="/admin/login" className="text-2xl font-bold text-black dark:text-white">
         CTM Store
       </Link>
 
