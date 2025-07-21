@@ -3,7 +3,7 @@ import { setUserLogin } from "@/redux/Slices/AuthSlice";
 import axios from "axios";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { toast } from "sonner";
 
 export default function AdminLogin() {
@@ -18,54 +18,55 @@ export default function AdminLogin() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     const username = e.target.elements.username.value.trim();
     const password = e.target.elements.password.value.trim();
-  
+
     if (!username || !password) {
       toast.error("Username and Password are required.");
       return;
     }
-  
+
     if (!validateUsername(username)) {
       toast.error(
         "Invalid username format. Use 3-20 letters, numbers, dots, or underscores."
       );
       return;
     }
-  
+
     if (password.length < 6) {
       toast.error("Password must be at least 6 characters long.");
       return;
     }
-  
+
     if (!enabled) {
       toast.warning("You must accept the terms and conditions.");
       return;
     }
-  
+
     setLoading(true);
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/auth/admin-login`,
-        { username, password }
+        `${import.meta.env.VITE_API_URL}/auth/admin-login`, 
+        { username, password },
+        { withCredentials: true } // if using cookies
       );
-  
+
       const { token, user } = res.data;
-  
-      // ✅ Save user details in Redux store
+
       dispatch(setUserLogin({ token, user }));
-  
-      // ✅ Save in localStorage with ID
+
       localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user)); // Ensures ID is stored
-  
+      localStorage.setItem("user", JSON.stringify(user));
+
       toast.success("Login successful!");
       navigate("/admin/dashboard");
     } catch (error) {
+      console.error("Login error:", error.response || error); // ✅ Debug log
+
       const errorMessage =
         error.response?.data?.message || "Login failed. Please try again.";
-  
+
       if (errorMessage.includes("username")) {
         toast.error("Username not found. Please check your username.");
       } else if (errorMessage.includes("password")) {
@@ -77,7 +78,7 @@ export default function AdminLogin() {
       setLoading(false);
     }
   };
-  
+
   return (
     <div className="min-h-fit py-12 px-5 flex items-center justify-center bg-gray-100 dark:bg-gray-900 transition-colors duration-200">
       <div className="w-full max-w-md p-8 space-y-6 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl">
@@ -100,9 +101,9 @@ export default function AdminLogin() {
             </label>
             <input
               id="username"
+              name="username"
               placeholder="Enter username..."
               type="text"
-              name="username"
               className="w-full h-11 px-4 rounded-lg border border-gray-300 dark:border-gray-600 
                 bg-white dark:bg-gray-700 text-gray-900 dark:text-white
                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
@@ -118,9 +119,9 @@ export default function AdminLogin() {
             </label>
             <input
               id="password"
+              name="password"
               placeholder="Enter password..."
               type="password"
-              name="password"
               className="w-full h-11 px-4 rounded-lg border border-gray-300 dark:border-gray-600 
                 bg-white dark:bg-gray-700 text-gray-900 dark:text-white
                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
@@ -153,8 +154,19 @@ export default function AdminLogin() {
               rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed
               dark:bg-blue-500 dark:hover:bg-blue-600"
           >
-            {loading ? "Logging in..." : "Login"} {/* ✅ Show loading state */}
+            {loading ? "Logging in..." : "Login"}
           </Button>
+
+          <p className="text-sm text-gray-600 dark:text-gray-300">
+            Create a new account?{" "}
+            <Link
+              to={"/admin/signup"}
+              className="font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 
+                dark:hover:text-blue-300 transition-colors"
+            >
+              Sign Up
+            </Link>
+          </p>
         </form>
       </div>
     </div>

@@ -21,27 +21,23 @@ export const useRazorpay = () => {
     });
   };
 
-  const generatePayment = async (amount) => {
-    try {
-      const token = localStorage.getItem("token");
-  
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/generate-payment`,
-        { amount },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-  
-      return response.data?.data;
-    } catch (error) {
-      console.error("Payment generation failed:", error?.response?.data || error.message);
-      return null;
-    }
-  };
-  
+  app.post("/generate-payment", authenticateUser, async (req, res) => {
+  const { amount } = req.body;
+
+  try {
+    const order = await razorpay.orders.create({
+      amount: amount * 100, // in paise
+      currency: "INR",
+      receipt: `order_rcptid_${Date.now()}`
+    });
+
+    res.status(200).json({ data: order });
+  } catch (error) {
+    console.error("Razorpay error:", error);
+    res.status(500).json({ error: "Payment generation failed" });
+  }
+});
+
 
   const verifyPayment = async (productArray, address, options) => {
     try {

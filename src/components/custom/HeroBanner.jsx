@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { ChevronLeft, ChevronRight } from "lucide-react"; 
 
 export default function  HeroBanner () {
   const images = [
@@ -63,13 +64,13 @@ export default function  HeroBanner () {
         onClick={goToPrevious}
         className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 mx-3 text-white p-2 rounded-full hover:bg-black/75"
       >
-        ←
+        <ChevronLeft />
       </button>
       <button
         onClick={goToNext}
         className="absolute right-4 mx-3 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/75"
       >
-        →
+        <ChevronRight/>
       </button>
 
       {/* Dot indicators */}

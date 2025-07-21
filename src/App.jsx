@@ -20,6 +20,7 @@ import { store } from "@/redux/Store";
 import Myorders from "./Pages/Myorders";
 import { Toaster } from "sonner";
 import ProtectedRoute from "./components/custom/ProtectedRoute";
+import AdminSignup from "./Pages/AdminSignup";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -69,6 +70,14 @@ export default function App() {
       ),
     },
     {
+      path:"/admin/signup",
+      element:(
+        <ProtectedRoute requiredRole="Admin">
+          <Rootlayout children={<AdminSignup/>}/>
+        </ProtectedRoute>
+      )
+    },
+    {
       path: "/admin/login",
 
       element: (
@@ -77,6 +86,7 @@ export default function App() {
         </ProtectedRoute>
       ),
     },
+
     // Admin routes go here
     {
       path: "/admin/dashboard",

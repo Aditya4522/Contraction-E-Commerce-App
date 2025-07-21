@@ -123,12 +123,13 @@ export default function Products() {
       return;
     }
   
-    const order = await generatePayment(product.price * quantity);
-  
-    if (!order) {
-      toast.error("Failed to initiate payment.");
-      return;
-    }
+ const order = await generatePayment(product.price * quantity);
+    console.log(order);
+    
+if (!order) {
+  toast.error("Failed to initiate payment.");
+  return;
+}
   
     const productArray = [
       {

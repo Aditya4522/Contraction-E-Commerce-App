@@ -1,14 +1,12 @@
 import { Star } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
-import RatingGenerator from "@/constants/RatiingGenrater"; 
+import RatingGenerator from "@/constants/RatiingGenrater";
 
-export default function ProductCard( product ) {
+export default function ProductCard(product) {
   if (!product) return null;
 
-  const { _id, name, image, rating, price } = product; 
-  
-  
+  const { _id, name, image, rating, price } = product;
 
   return (
     <div className="relative border w-fit overflow-hidden group hover:shadow-lg transition-shadow duration-300 ease-in-out rounded-md">
